@@ -394,54 +394,53 @@
             display: block;
             position: absolute;
             inset: 0;
-            background: url('assets/reeds-foreground.png') center / cover no-repeat;
-            mix-blend-mode: screen;
-            opacity: 0.92;
-            filter: saturate(0.84) contrast(1.06);
-            animation: reeds-breathe 16s ease-in-out infinite alternate;
         }
-        [data-atmosphere="wild"] .reed { display: none; }
-        .reed {
+        .reeds-front {
+            display: none;
             position: absolute;
-            bottom: -12vh;
+            inset: 0;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        [data-atmosphere="wild"] .reeds-front { display: block; }
+        .reed-photo {
+            position: absolute;
+            bottom: -15vh;
             left: var(--x);
-            width: 3px;
+            width: auto;
             height: var(--h);
-            background: linear-gradient(to top, #081a0e 0%, #294829 55%, rgba(99, 128, 58, 0.82) 100%);
-            box-shadow: 1px 0 0 rgba(177, 201, 116, 0.15);
-            transform: rotate(var(--tilt));
+            object-fit: contain;
+            object-position: bottom;
+            mix-blend-mode: screen;
             transform-origin: bottom center;
-            opacity: var(--opacity, 0.9);
-            animation: reed-sway var(--duration, 7s) ease-in-out infinite alternate;
+            opacity: var(--opacity, 0.55);
+            filter: brightness(var(--brightness, 0.52)) saturate(var(--saturation, 0.72)) contrast(1.08);
+            animation: reed-photo-sway var(--duration, 8s) ease-in-out infinite alternate;
+            will-change: transform;
         }
-        .reed::after {
-            content: '';
-            position: absolute;
-            top: 10%;
-            left: -4px;
-            width: 10px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(90deg, #233818, #736230, #142413);
-            opacity: 0.9;
+        .reed-photo.is-right {
+            left: auto;
+            right: var(--x);
         }
-        .reed.is-right { left: auto; right: var(--x); }
-        .reed.is-right::after { top: 24%; }
+        .reeds-back .reed-photo {
+            opacity: var(--opacity, 0.28);
+            filter: brightness(var(--brightness, 0.38)) saturate(0.58) contrast(1.03) blur(var(--blur, 0.5px));
+        }
+        .reeds-front .reed-photo {
+            opacity: var(--opacity, 0.46);
+        }
 
         @keyframes mist-drift {
             from { transform: translateX(-3%) scaleX(0.96); }
             to { transform: translateX(3%) scaleX(1.04); }
         }
-        @keyframes reed-sway {
-            from { transform: rotate(calc(var(--tilt) - 2deg)); }
-            to { transform: rotate(calc(var(--tilt) + 2deg)); }
-        }
-        @keyframes reeds-breathe {
-            from { transform: scale(1); }
-            to { transform: scale(1.025); }
+        @keyframes reed-photo-sway {
+            from { transform: translateX(-0.6vw) rotate(calc(var(--tilt, 0deg) - var(--sway, 1.2deg))) scaleX(var(--flip, 1)); }
+            to { transform: translateX(0.6vw) rotate(calc(var(--tilt, 0deg) + var(--sway, 1.2deg))) scaleX(var(--flip, 1)); }
         }
         @media (prefers-reduced-motion: reduce) {
-            .lake-mist, .reed, .reeds { animation: none; }
+            .lake-mist, .reed-photo { animation: none; }
         }
         
         .hero-content {
@@ -911,7 +910,12 @@
             <div class="hero-ambience" aria-hidden="true">
                 <div class="lake-mist"></div>
                 <div class="lake-glint"></div>
-                <div class="reeds"></div>
+                <div class="reeds reeds-back">
+                    <img class="reed-photo" src="assets/reed-plant-hq.png" alt="" style="--x: -7%; --h: 82vh; --tilt: -5deg; --duration: 11s; --opacity: .32;">
+                    <img class="reed-photo" src="assets/reed-plant-hq.png" alt="" style="--x: 10%; --h: 56vh; --tilt: 6deg; --duration: 8.5s; --opacity: .2; --flip: -1; --blur: 1px;">
+                    <img class="reed-photo is-right" src="assets/reed-plant-hq.png" alt="" style="--x: -5%; --h: 88vh; --tilt: 6deg; --duration: 12s; --opacity: .3; --flip: -1;">
+                    <img class="reed-photo is-right" src="assets/reed-plant-hq.png" alt="" style="--x: 14%; --h: 52vh; --tilt: -7deg; --duration: 9.5s; --opacity: .19; --blur: 1.2px;">
+                </div>
             </div>
             <div class="container">
                 <div class="hero-content reveal">
@@ -923,6 +927,11 @@
                         <a href="#benefits" class="btn">Искусство создания</a>
                     </div>
                 </div>
+            </div>
+            <div class="reeds-front" aria-hidden="true">
+                <img class="reed-photo" src="assets/reed-plant-hq.png" alt="" style="--x: -11%; --h: 104vh; --tilt: -3deg; --duration: 13s; --opacity: .52; --brightness: .42; --sway: 1deg;">
+                <img class="reed-photo" src="assets/reed-plant-hq.png" alt="" style="--x: 17%; --h: 68vh; --tilt: 7deg; --duration: 10s; --opacity: .28; --brightness: .36; --flip: -1; --sway: 1.5deg;">
+                <img class="reed-photo is-right" src="assets/reed-plant-hq.png" alt="" style="--x: -9%; --h: 108vh; --tilt: 4deg; --duration: 14s; --opacity: .5; --brightness: .4; --flip: -1; --sway: .9deg;">
             </div>
         </section>
 
