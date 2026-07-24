@@ -390,7 +390,17 @@
             transform: rotate(-1deg);
         }
 
-        [data-atmosphere="wild"] .reeds { display: block; }
+        [data-atmosphere="wild"] .reeds {
+            display: block;
+            position: absolute;
+            inset: 0;
+            background: url('assets/reeds-foreground.png') center / cover no-repeat;
+            mix-blend-mode: screen;
+            opacity: 0.92;
+            filter: saturate(0.84) contrast(1.06);
+            animation: reeds-breathe 16s ease-in-out infinite alternate;
+        }
+        [data-atmosphere="wild"] .reed { display: none; }
         .reed {
             position: absolute;
             bottom: -12vh;
@@ -426,8 +436,12 @@
             from { transform: rotate(calc(var(--tilt) - 2deg)); }
             to { transform: rotate(calc(var(--tilt) + 2deg)); }
         }
+        @keyframes reeds-breathe {
+            from { transform: scale(1); }
+            to { transform: scale(1.025); }
+        }
         @media (prefers-reduced-motion: reduce) {
-            .lake-mist, .reed { animation: none; }
+            .lake-mist, .reed, .reeds { animation: none; }
         }
         
         .hero-content {
@@ -897,17 +911,7 @@
             <div class="hero-ambience" aria-hidden="true">
                 <div class="lake-mist"></div>
                 <div class="lake-glint"></div>
-                <div class="reeds">
-                    <i class="reed" style="--x: 2%; --h: 62vh; --tilt: -7deg; --duration: 8s;"></i>
-                    <i class="reed" style="--x: 6%; --h: 49vh; --tilt: 4deg; --opacity: .72; --duration: 6s;"></i>
-                    <i class="reed" style="--x: 10%; --h: 71vh; --tilt: -3deg; --duration: 9s;"></i>
-                    <i class="reed" style="--x: 15%; --h: 43vh; --tilt: 8deg; --opacity: .65; --duration: 7s;"></i>
-                    <i class="reed" style="--x: 1%; --h: 46vh; --tilt: 5deg; --opacity: .6; --duration: 10s;"></i>
-                    <i class="reed is-right" style="--x: 2%; --h: 58vh; --tilt: 8deg; --duration: 8s;"></i>
-                    <i class="reed is-right" style="--x: 7%; --h: 44vh; --tilt: -5deg; --opacity: .7; --duration: 6s;"></i>
-                    <i class="reed is-right" style="--x: 12%; --h: 69vh; --tilt: 4deg; --duration: 9s;"></i>
-                    <i class="reed is-right" style="--x: 17%; --h: 39vh; --tilt: -9deg; --opacity: .58; --duration: 7s;"></i>
-                </div>
+                <div class="reeds"></div>
             </div>
             <div class="container">
                 <div class="hero-content reveal">
