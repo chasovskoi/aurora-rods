@@ -353,13 +353,86 @@
                 var(--scene-image) center / cover no-repeat;
             z-index: 0;
         }
-        [data-theme="light"] .hero-bg {
-            background: radial-gradient(circle at 70% 50%, rgba(46, 58, 51, 0.08) 0%, transparent 60%);
+
+        .hero-ambience {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .lake-mist,
+        .lake-glint,
+        .reeds { display: none; }
+
+        [data-atmosphere="lake"] .lake-mist {
+            display: block;
+            position: absolute;
+            left: -12%;
+            bottom: 11%;
+            width: 124%;
+            height: 22%;
+            background: radial-gradient(ellipse at center, rgba(196, 215, 220, 0.18) 0%, rgba(167, 196, 204, 0.08) 38%, transparent 72%);
+            filter: blur(18px);
+            opacity: 0.75;
+            animation: mist-drift 18s ease-in-out infinite alternate;
+        }
+        [data-atmosphere="lake"] .lake-glint {
+            display: block;
+            position: absolute;
+            right: 9%;
+            bottom: 17%;
+            width: min(34vw, 520px);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(235, 192, 139, 0.72), transparent);
+            box-shadow: 0 14px 0 rgba(235, 192, 139, 0.22), 0 31px 0 rgba(235, 192, 139, 0.12);
+            opacity: 0.78;
+            transform: rotate(-1deg);
+        }
+
+        [data-atmosphere="wild"] .reeds { display: block; }
+        .reed {
+            position: absolute;
+            bottom: -12vh;
+            left: var(--x);
+            width: 3px;
+            height: var(--h);
+            background: linear-gradient(to top, #081a0e 0%, #294829 55%, rgba(99, 128, 58, 0.82) 100%);
+            box-shadow: 1px 0 0 rgba(177, 201, 116, 0.15);
+            transform: rotate(var(--tilt));
+            transform-origin: bottom center;
+            opacity: var(--opacity, 0.9);
+            animation: reed-sway var(--duration, 7s) ease-in-out infinite alternate;
+        }
+        .reed::after {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: -4px;
+            width: 10px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(90deg, #233818, #736230, #142413);
+            opacity: 0.9;
+        }
+        .reed.is-right { left: auto; right: var(--x); }
+        .reed.is-right::after { top: 24%; }
+
+        @keyframes mist-drift {
+            from { transform: translateX(-3%) scaleX(0.96); }
+            to { transform: translateX(3%) scaleX(1.04); }
+        }
+        @keyframes reed-sway {
+            from { transform: rotate(calc(var(--tilt) - 2deg)); }
+            to { transform: rotate(calc(var(--tilt) + 2deg)); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .lake-mist, .reed { animation: none; }
         }
         
         .hero-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             max-width: 800px;
         }
         .hero-subtitle {
@@ -821,6 +894,21 @@
         <!-- HERO -->
         <section class="hero" id="hero">
             <div class="hero-bg"></div>
+            <div class="hero-ambience" aria-hidden="true">
+                <div class="lake-mist"></div>
+                <div class="lake-glint"></div>
+                <div class="reeds">
+                    <i class="reed" style="--x: 2%; --h: 62vh; --tilt: -7deg; --duration: 8s;"></i>
+                    <i class="reed" style="--x: 6%; --h: 49vh; --tilt: 4deg; --opacity: .72; --duration: 6s;"></i>
+                    <i class="reed" style="--x: 10%; --h: 71vh; --tilt: -3deg; --duration: 9s;"></i>
+                    <i class="reed" style="--x: 15%; --h: 43vh; --tilt: 8deg; --opacity: .65; --duration: 7s;"></i>
+                    <i class="reed" style="--x: 1%; --h: 46vh; --tilt: 5deg; --opacity: .6; --duration: 10s;"></i>
+                    <i class="reed is-right" style="--x: 2%; --h: 58vh; --tilt: 8deg; --duration: 8s;"></i>
+                    <i class="reed is-right" style="--x: 7%; --h: 44vh; --tilt: -5deg; --opacity: .7; --duration: 6s;"></i>
+                    <i class="reed is-right" style="--x: 12%; --h: 69vh; --tilt: 4deg; --duration: 9s;"></i>
+                    <i class="reed is-right" style="--x: 17%; --h: 39vh; --tilt: -9deg; --opacity: .58; --duration: 7s;"></i>
+                </div>
+            </div>
             <div class="container">
                 <div class="hero-content reveal">
                     <span class="hero-subtitle delay-1">Премиальное снаряжение</span>
