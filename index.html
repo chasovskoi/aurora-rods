@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark">
+<html lang="ru" data-theme="dark" data-atmosphere="lake">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,6 +27,9 @@
             --accent-light: #c4d4c8;
             --glow: rgba(74, 93, 82, 0.15);
             --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --scene-image: url('assets/lake-evening.png');
+            --scene-overlay: rgba(3, 12, 20, 0.72);
+            --header-bg: rgba(3, 12, 20, 0.74);
             
             --font-display: 'Cormorant Garamond', serif;
             --font-ui: 'Manrope', sans-serif;
@@ -34,6 +37,36 @@
             --transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             --transition-fast: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             --header-height: 80px;
+        }
+
+        [data-atmosphere="lake"] {
+            --bg: #061019;
+            --surface: #0a1820;
+            --surface-hover: #11252e;
+            --text-main: #edf3f2;
+            --text-muted: #9dadad;
+            --accent: #b67848;
+            --accent-hover: #d0945c;
+            --accent-light: #e1bd91;
+            --glow: rgba(129, 162, 175, 0.18);
+            --scene-image: url('assets/lake-evening.png');
+            --scene-overlay: rgba(3, 12, 20, 0.72);
+            --header-bg: rgba(3, 12, 20, 0.74);
+        }
+
+        [data-atmosphere="wild"] {
+            --bg: #07120d;
+            --surface: #0b1c12;
+            --surface-hover: #132a1a;
+            --text-main: #edf4df;
+            --text-muted: #a0ad91;
+            --accent: #819d54;
+            --accent-hover: #a2bd70;
+            --accent-light: #c6d8a1;
+            --glow: rgba(109, 142, 80, 0.22);
+            --scene-image: url('assets/wild-reeds.png');
+            --scene-overlay: rgba(3, 14, 8, 0.74);
+            --header-bg: rgba(3, 14, 8, 0.76);
         }
 
         [data-theme="light"] {
@@ -162,7 +195,7 @@
             transition: var(--transition-fast);
         }
         header.scrolled {
-            background: rgba(9, 10, 12, 0.7);
+            background: var(--header-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
@@ -209,6 +242,28 @@
         .nav-links a:hover::after { width: 100%; }
 
         .header-actions { display: flex; gap: 1.5rem; align-items: center; }
+
+        .atmosphere-switch {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px;
+            border: 1px solid var(--border);
+            background: rgba(3, 11, 8, 0.28);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .atmosphere-switch button {
+            padding: 0.42rem 0.65rem;
+            color: var(--text-muted);
+            font-size: 0.62rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            transition: var(--transition-fast);
+        }
+        .atmosphere-switch button[aria-pressed="true"] {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+        }
         
         .icon-btn {
             width: 40px;
@@ -293,7 +348,9 @@
         .hero-bg {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 70% 50%, rgba(74, 93, 82, 0.2) 0%, transparent 60%);
+            background:
+                linear-gradient(90deg, var(--scene-overlay) 0%, rgba(3, 12, 20, 0.42) 55%, rgba(3, 12, 20, 0.16) 100%),
+                var(--scene-image) center / cover no-repeat;
             z-index: 0;
         }
         [data-theme="light"] .hero-bg {
@@ -745,6 +802,10 @@
             </nav>
 
             <div class="header-actions">
+                <div class="atmosphere-switch" role="group" aria-label="Атмосфера сайта">
+                    <button type="button" data-atmosphere-value="lake" aria-pressed="true">Озеро</button>
+                    <button type="button" data-atmosphere-value="wild" aria-pressed="false">Камыши</button>
+                </div>
                 <button class="icon-btn" id="cart-btn" aria-label="Корзина">
                     <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                     <span class="cart-badge" id="cart-badge">0</span>
@@ -1134,6 +1195,26 @@
                     }
                 });
             });
+        });
+
+        // Atmosphere switcher
+        const atmosphereButtons = document.querySelectorAll('[data-atmosphere-value]');
+        const savedAtmosphere = localStorage.getItem('aurora-atmosphere');
+
+        const setAtmosphere = (atmosphere) => {
+            document.documentElement.setAttribute('data-atmosphere', atmosphere);
+            atmosphereButtons.forEach((button) => {
+                button.setAttribute('aria-pressed', String(button.dataset.atmosphereValue === atmosphere));
+            });
+            localStorage.setItem('aurora-atmosphere', atmosphere);
+        };
+
+        if (savedAtmosphere === 'lake' || savedAtmosphere === 'wild') {
+            setAtmosphere(savedAtmosphere);
+        }
+
+        atmosphereButtons.forEach((button) => {
+            button.addEventListener('click', () => setAtmosphere(button.dataset.atmosphereValue));
         });
 
         // Sticky Header & Scroll Animations
