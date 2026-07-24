@@ -502,7 +502,7 @@
             grid-template-columns: 1fr 1fr;
             align-items: center;
         }
-        .featured-text { padding: 8rem 5% 8rem 3rem; }
+        .featured-text { padding: 8rem 5% 8rem clamp(8rem, 14vw, 14rem); }
         .featured-visual {
             height: clamp(420px, 42vw, 560px);
             min-height: 0;
@@ -691,6 +691,7 @@
             .bento-card-small { grid-column: span 6; }
             .bento-card-wide { grid-template-columns: 1fr; gap: 2rem; }
             .featured-grid { grid-template-columns: 1fr; }
+            .featured-text { padding: 5rem 5%; }
             .featured-visual { border-left: none; border-top: 1px solid var(--border); min-height: 400px; }
             .reviews-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr 1fr; }
