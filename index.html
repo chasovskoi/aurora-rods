@@ -607,6 +607,26 @@
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
+        .outline-digital-mark {
+            display: inline-flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.66rem;
+            font-weight: 600;
+            line-height: 1;
+            letter-spacing: 0.045em;
+            white-space: nowrap;
+            transition: var(--transition-fast);
+        }
+        .outline-digital-mark:hover { color: var(--text-main); }
+        .outline-digital-mark__outline {
+            min-height: 25px;
+            padding: 0 5px;
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid currentColor;
+        }
+        .outline-digital-mark__digital { padding-left: 7px; }
 
         /* Cart Panel */
         .cart-overlay {
@@ -932,7 +952,10 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 AURORA RODS. Все права защищены.</p>
-                <p>Дизайн и разработка: High-End Studio</p>
+                <a class="outline-digital-mark" href="https://chasovskoi.github.io/oxssex/" target="_blank" rel="noreferrer" aria-label="Outline Digital — портфолио">
+                    <span class="outline-digital-mark__outline">OUTLINE</span>
+                    <span class="outline-digital-mark__digital">DIGITAL</span>
+                </a>
             </div>
         </div>
     </footer>
